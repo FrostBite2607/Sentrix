@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SENTRIX — AI-powered observability that sees everything and leaks nothing. Smart security monitoring for your servers, computers, and applications." />
+  <title>SENTRIX — Sees everything. Leaks nothing.</title>
+
+  <!-- Google Fonts: Inter + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       STICKY NAV
+       ============================================================ -->
+  <header class="nav" id="nav" role="banner">
+    <div class="nav__inner container">
+
+      <!-- Logo: inline SVG shield + wordmark -->
+      <a href="#" class="nav__logo" aria-label="SENTRIX home">
+        <svg class="nav__logo-icon" width="28" height="32" viewBox="0 0 28 32" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 0L0 5.333V16c0 8.8 5.973 17.013 14 19.2C22.027 33.013 28 24.8 28 16V5.333L14 0Z" fill="#22D3EE" fill-opacity="0.15" stroke="#22D3EE" stroke-width="1.5"/>
+          <path d="M9 16l3.5 3.5L19 12" stroke="#22D3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="nav__logo-text">SENTRIX</span>
+      </a>
+
+      <!-- Desktop nav links -->
+      <nav class="nav__links" aria-label="Main navigation">
+        <a href="#features" class="nav__link">Features</a>
+        <a href="#privacy" class="nav__link">Privacy</a>
+        <a href="#use-cases" class="nav__link">Use Cases</a>
+        <a href="#pricing" class="nav__link">Pricing</a>
+      </nav>
+
+      <!-- CTA + hamburger -->
+      <div class="nav__actions">
+        <a href="#early-access" class="btn btn--cyan nav__cta">Get early access</a>
+        <button
+          class="nav__hamburger"
+          id="hamburger"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <!-- Three bars that animate into an X -->
+          <span class="nav__hamburger-bar"></span>
+          <span class="nav__hamburger-bar"></span>
+          <span class="nav__hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu (hidden by default, shown via .nav-open on <header>) -->
+    <nav class="nav__mobile" id="mobile-menu" aria-label="Mobile navigation">
+      <a href="#features" class="nav__mobile-link">Features</a>
+      <a href="#privacy" class="nav__mobile-link">Privacy</a>
+      <a href="#use-cases" class="nav__mobile-link">Use Cases</a>
+      <a href="#pricing" class="nav__mobile-link">Pricing</a>
+      <a href="#early-access" class="btn btn--cyan nav__mobile-cta">Get early access</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <section class="hero" id="hero" aria-labelledby="hero-heading">
+      <div class="container hero__inner">
+
+        <!-- Left: copy -->
+        <div class="hero__copy">
+          <h1 class="hero__heading" id="hero-heading">Sees everything.<br />Leaks nothing.</h1>
+          <p class="hero__body">
+            A smart security guard for your company's technology. SENTRIX watches your servers,
+            computers, and applications around the clock, spots problems early, explains why they
+            happen, and keeps your sensitive data inside your own environment.
+          </p>
+          <div class="hero__actions">
+            <a href="#early-access" class="btn btn--cyan">Get early access</a>
+            <a href="#features" class="btn btn--outline">See how it works</a>
+          </div>
+        </div>
+
+        <!-- Right: dashboard mockup (pure HTML/CSS) -->
+        <div class="hero__dashboard" aria-label="SENTRIX dashboard prototype mockup" role="img">
+
+          <!-- Metric tiles -->
+          <div class="dash__metrics">
+            <!-- CPU -->
+            <div class="dash__tile">
+              <div class="dash__tile-header">
+                <span class="dash__tile-label">CPU</span>
+                <span class="dash__tile-value dash__tile-value--warn">67%</span>
+              </div>
+              <div class="dash__bar" role="progressbar" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" aria-label="CPU usage 67%">
+                <div class="dash__bar-fill dash__bar-fill--warn" style="width: 67%"></div>
+              </div>
+            </div>
+
+            <!-- Memory -->
+            <div class="dash__tile">
+              <div class="dash__tile-header">
+                <span class="dash__tile-label">Memory</span>
+                <span class="dash__tile-value dash__tile-value--danger">84%</span>
+              </div>
+              <div class="dash__bar" role="progressbar" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100" aria-label="Memory usage 84%">
+                <div class="dash__bar-fill dash__bar-fill--danger" style="width: 84%"></div>
+              </div>
+            </div>
+
+            <!-- Network -->
+            <div class="dash__tile">
+              <div class="dash__tile-header">
+                <span class="dash__tile-label">Network</span>
+                <span class="dash__tile-value">2.3 GB/s</span>
+              </div>
+              <div class="dash__bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" aria-label="Network usage approximately 45%">
+                <div class="dash__bar-fill" style="width: 45%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event list -->
+          <div class="dash__events">
+            <p class="dash__section-label">Live events</p>
+            <ul class="dash__event-list" role="list">
+              <li class="dash__event">
+                <span class="dash__event-dot dash__event-dot--danger"></span>
+                <span class="dash__event-text">db-prod-01 CPU spike 94%</span>
+                <span class="dash__event-time">14:32:07</span>
+              </li>
+              <li class="dash__event">
+                <span class="dash__event-dot dash__event-dot--warn"></span>
+                <span class="dash__event-text">auth-service latency +340ms</span>
+                <span class="dash__event-time">14:31:55</span>
+              </li>
+              <li class="dash__event">
+                <span class="dash__event-dot dash__event-dot--warn"></span>
+                <span class="dash__event-text">3 failed logins: admin@corp.com</span>
+                <span class="dash__event-time">14:31:40</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Likely cause box -->
+          <div class="dash__cause">
+            <p class="dash__cause-label">Likely cause</p>
+            <p class="dash__cause-text">
+              Database CPU spike is causing auth-service latency. Likely trigger: unoptimized
+              query in the last deployment.
+            </p>
+          </div>
+
+          <!-- Sample data disclaimer -->
+          <p class="dash__disclaimer">sample data, prototype concept</p>
+        </div><!-- /.hero__dashboard -->
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FEATURES — Four jobs, one platform
+         ============================================================ -->
+    <section class="features" id="features" aria-labelledby="features-heading">
+      <div class="container">
+        <h2 class="section-heading" id="features-heading">Four jobs, one platform</h2>
+
+        <div class="features__grid">
+
+          <!-- Card 1: Watches everything -->
+          <article class="card" aria-labelledby="feat-1-title">
+            <div class="card__icon" aria-hidden="true">
+              <!-- Eye icon -->
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 12C1 12 5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12Z" stroke="#22D3EE" stroke-width="1.75" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="3" stroke="#22D3EE" stroke-width="1.75"/>
+              </svg>
+            </div>
+            <h3 class="card__title" id="feat-1-title">Watches everything</h3>
+            <p class="card__body">
+              Tracks server health, CPU usage, memory, network speed, application errors,
+              and failed logins in real time.
+            </p>
+          </article>
+
+          <!-- Card 2: Finds problems early -->
+          <article class="card" aria-labelledby="feat-2-title">
+            <div class="card__icon" aria-hidden="true">
+              <!-- Magnify / search icon -->
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="10.5" cy="10.5" r="6.5" stroke="#22D3EE" stroke-width="1.75"/>
+                <path d="M15.5 15.5L21 21" stroke="#22D3EE" stroke-width="1.75" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="card__title" id="feat-2-title">Finds problems early</h3>
+            <p class="card__body">
+              Detects overheating servers, slow websites, and repeated login failures before
+              they become outages or security incidents.
+            </p>
+          </article>
+
+          <!-- Card 3: Connects the dots with AI -->
+          <article class="card" aria-labelledby="feat-3-title">
+            <div class="card__icon" aria-hidden="true">
+              <!-- Brain / AI icon (stylised nodes) -->
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="5" r="2" stroke="#22D3EE" stroke-width="1.5"/>
+                <circle cx="5" cy="17" r="2" stroke="#22D3EE" stroke-width="1.5"/>
+                <circle cx="19" cy="17" r="2" stroke="#22D3EE" stroke-width="1.5"/>
+                <path d="M12 7v4M12 11l-5.13 4.3M12 11l5.13 4.3" stroke="#22D3EE" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="card__title" id="feat-3-title">Connects the dots with AI</h3>
+            <p class="card__body">
+              Links related events and explains the likely cause in plain language instead of
+              hundreds of separate alerts.
+            </p>
+          </article>
+
+          <!-- Card 4: Protects your data -->
+          <article class="card" aria-labelledby="feat-4-title">
+            <div class="card__icon" aria-hidden="true">
+              <!-- Lock / shield icon -->
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L4 6v6c0 5.5 3.5 10.74 8 12 4.5-1.26 8-6.5 8-12V6L12 2Z" stroke="#22D3EE" stroke-width="1.75" stroke-linejoin="round"/>
+                <rect x="9" y="10" width="6" height="5" rx="1" stroke="#22D3EE" stroke-width="1.5"/>
+                <path d="M12 10V8.5a1.5 1.5 0 0 0-3 0" stroke="#22D3EE" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="card__title" id="feat-4-title">Protects your data</h3>
+            <p class="card__body">
+              Sensitive raw logs never leave your environment. Only approved operational
+              information reaches the central dashboard.
+            </p>
+          </article>
+
+        </div><!-- /.features__grid -->
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PRIVACY — Your raw logs stay with you
+         ============================================================ -->
+    <section class="privacy" id="privacy" aria-labelledby="privacy-heading">
+      <div class="container">
+        <h2 class="section-heading" id="privacy-heading">Your raw logs stay with you</h2>
+
+        <!-- Three-step horizontal flow (stacks on mobile) -->
+        <div class="privacy__steps">
+
+          <div class="privacy__step">
+            <div class="privacy__step-num" aria-hidden="true">01</div>
+            <h3 class="privacy__step-title">Local collector agent</h3>
+            <p class="privacy__step-body">
+              Runs entirely inside your own environment — your servers, your network.
+            </p>
+          </div>
+
+          <!-- Connector line (hidden on mobile, decorative) -->
+          <div class="privacy__connector" aria-hidden="true"></div>
+
+          <div class="privacy__step">
+            <div class="privacy__step-num" aria-hidden="true">02</div>
+            <h3 class="privacy__step-title">Filter and redact locally</h3>
+            <p class="privacy__step-body">
+              Raw logs are processed on-site. Sensitive data is redacted before anything
+              leaves your environment.
+            </p>
+          </div>
+
+          <!-- Connector line -->
+          <div class="privacy__connector" aria-hidden="true"></div>
+
+          <div class="privacy__step">
+            <div class="privacy__step-num" aria-hidden="true">03</div>
+            <h3 class="privacy__step-title">Central dashboard</h3>
+            <p class="privacy__step-body">
+              Receives only approved operational information, where AI correlates events and
+              explains root causes.
+            </p>
+          </div>
+
+        </div><!-- /.privacy__steps -->
+      </div>
+    </section>
+
+    <!-- ============================================================
+         USE CASES — Example scenarios
+         ============================================================ -->
+    <section class="use-cases" id="use-cases" aria-labelledby="use-cases-heading">
+      <div class="container">
+        <h2 class="section-heading" id="use-cases-heading">Example scenarios</h2>
+
+        <div class="use-cases__grid">
+
+          <article class="card" aria-labelledby="uc-1-title">
+            <h3 class="card__title" id="uc-1-title">Overheating server and slow website</h3>
+            <p class="card__body">
+              An overheating server slows down a website. SENTRIX links the heat event to the
+              slowdown and explains the connection.
+            </p>
+          </article>
+
+          <article class="card" aria-labelledby="uc-2-title">
+            <h3 class="card__title" id="uc-2-title">Repeated failed logins</h3>
+            <p class="card__body">
+              Multiple failed login attempts on a single account. SENTRIX flags the pattern
+              and surfaces it as a potential brute-force attempt.
+            </p>
+          </article>
+
+          <article class="card" aria-labelledby="uc-3-title">
+            <h3 class="card__title" id="uc-3-title">Error spike after a release</h3>
+            <p class="card__body">
+              Application errors spike immediately after a deployment. SENTRIX correlates the
+              timing and identifies the new release as the likely cause.
+            </p>
+          </article>
+
+        </div><!-- /.use-cases__grid -->
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PRICING — Pricing (planned)
+         ============================================================ -->
+    <section class="pricing" id="pricing" aria-labelledby="pricing-heading">
+      <div class="container">
+        <h2 class="section-heading" id="pricing-heading">Pricing (planned)</h2>
+        <p class="section-subheading">
+          No prices yet — we're still figuring out what's fair. Join the waitlist to shape it.
+        </p>
+
+        <div class="pricing__grid">
+
+          <!-- Free tier -->
+          <article class="pricing__card" aria-labelledby="tier-free-title">
+            <h3 class="pricing__tier-name" id="tier-free-title">Free</h3>
+            <ul class="pricing__features" role="list">
+              <li class="pricing__feature">Local collector agent</li>
+              <li class="pricing__feature">Basic monitoring</li>
+            </ul>
+            <a href="#early-access" class="btn btn--outline pricing__cta">Join the waitlist</a>
+          </article>
+
+          <!-- Pro tier (highlighted) -->
+          <article class="pricing__card pricing__card--pro" aria-labelledby="tier-pro-title">
+            <div class="pricing__badge">Recommended</div>
+            <h3 class="pricing__tier-name" id="tier-pro-title">Pro</h3>
+            <ul class="pricing__features" role="list">
+              <li class="pricing__feature">Everything in Free</li>
+              <li class="pricing__feature">AI event correlation</li>
+              <li class="pricing__feature">Root-cause explanations</li>
+              <li class="pricing__feature">Central dashboard</li>
+              <li class="pricing__feature">Per node, per month</li>
+            </ul>
+            <a href="#early-access" class="btn btn--cyan pricing__cta">Get early access</a>
+          </article>
+
+          <!-- Enterprise tier -->
+          <article class="pricing__card" aria-labelledby="tier-ent-title">
+            <h3 class="pricing__tier-name" id="tier-ent-title">Enterprise</h3>
+            <ul class="pricing__features" role="list">
+              <li class="pricing__feature">Everything in Pro</li>
+              <li class="pricing__feature">On-premise deployment</li>
+              <li class="pricing__feature">Compliance features</li>
+            </ul>
+            <a href="#early-access" class="btn btn--outline pricing__cta">Contact us</a>
+          </article>
+
+        </div><!-- /.pricing__grid -->
+      </div>
+    </section>
+
+    <!-- ============================================================
+         EARLY ACCESS FORM
+         ============================================================ -->
+    <section class="early-access" id="early-access" aria-labelledby="form-heading">
+      <div class="container early-access__inner">
+        <h2 class="section-heading" id="form-heading">Get early access</h2>
+        <p class="section-subheading">Be among the first to try SENTRIX.</p>
+
+        <!-- Form wrapper — JS shows success message in its place -->
+        <div class="early-access__form-wrap" id="form-wrap">
+          <form
+            class="early-access__form"
+            id="waitlist-form"
+            novalidate
+            aria-label="Early access waitlist form"
+          >
+
+            <!-- Name -->
+            <div class="form__group">
+              <label class="form__label" for="field-name">Name</label>
+              <input
+                class="form__input"
+                type="text"
+                id="field-name"
+                name="name"
+                autocomplete="name"
+                required
+                placeholder="Your full name"
+                aria-required="true"
+              />
+              <span class="form__error" id="error-name" role="alert" aria-live="polite"></span>
+            </div>
+
+            <!-- Work email -->
+            <div class="form__group">
+              <label class="form__label" for="field-email">Work email</label>
+              <input
+                class="form__input"
+                type="email"
+                id="field-email"
+                name="email"
+                autocomplete="email"
+                required
+                placeholder="you@company.com"
+                aria-required="true"
+              />
+              <span class="form__error" id="error-email" role="alert" aria-live="polite"></span>
+            </div>
+
+            <!-- Role -->
+            <div class="form__group">
+              <label class="form__label" for="field-role">Role</label>
+              <select
+                class="form__select"
+                id="field-role"
+                name="role"
+                required
+                aria-required="true"
+              >
+                <option value="" disabled selected>Select your role</option>
+                <option value="devops">DevOps engineer</option>
+                <option value="it-ops">IT operations manager</option>
+                <option value="other">Other</option>
+              </select>
+              <span class="form__error" id="error-role" role="alert" aria-live="polite"></span>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn--cyan form__submit">Join the waitlist</button>
+
+          </form><!-- /#waitlist-form -->
+        </div><!-- /#form-wrap -->
+
+        <!-- Success message (hidden until form submission) -->
+        <div class="early-access__success" id="form-success" aria-live="polite" hidden>
+          <p class="early-access__success-text">
+            Thanks, you're on the list! We'll be in touch soon.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container footer__inner">
+
+      <!-- Logo -->
+      <a href="#" class="footer__logo" aria-label="SENTRIX home">
+        <svg class="footer__logo-icon" width="24" height="28" viewBox="0 0 28 32" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 0L0 5.333V16c0 8.8 5.973 17.013 14 19.2C22.027 33.013 28 24.8 28 16V5.333L14 0Z" fill="#22D3EE" fill-opacity="0.15" stroke="#22D3EE" stroke-width="1.5"/>
+          <path d="M9 16l3.5 3.5L19 12" stroke="#22D3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="footer__logo-text">SENTRIX</span>
+      </a>
+
+      <p class="footer__tagline">
+        AI-powered observability that sees everything and leaks nothing.
+      </p>
+
+      <p class="footer__copy">
+        &copy; 2026 SENTRIX. Prototype &mdash; not a final product.
+      </p>
+
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

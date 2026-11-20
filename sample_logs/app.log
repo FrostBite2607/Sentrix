@@ -1,0 +1,15 @@
+2026-11-20 14:30:01 INFO  [web-server] Request GET /api/users completed in 45ms
+2026-11-20 14:30:05 ERROR [web-server] Database connection timeout after 30000ms - host=db-prod-01.internal
+2026-11-20 14:30:12 WARN  [web-server] Slow response: GET /dashboard took 3420ms (threshold: 1000ms)
+2026-11-20 14:30:18 ERROR [payment-service] Failed to process payment for user=john.doe@company.com - timeout connecting to gateway at 10.0.0.88:3306
+2026-11-20 14:30:25 INFO  [scheduler] Backup job completed successfully
+2026-11-20 14:30:30 ERROR [auth-service] Token validation failed for Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9
+2026-11-20 14:30:35 ERROR [api-gateway] Upstream connection refused from 10.0.0.42:8080 - service=inventory password=DbPa$$2026!
+2026-11-20 14:30:40 WARN  [web-server] Slow response: POST /api/checkout took 5100ms (threshold: 1000ms)
+2026-11-20 14:30:45 ERROR [notification-service] SMTP send failed for recipient alice.wu@example.org - connection reset by 172.16.0.5
+2026-11-20 14:30:50 ERROR [data-pipeline] S3 upload failed: api_key=AKIAIOSFODNN7EXAMPLE access denied for bucket prod-logs
+2026-11-20 14:30:55 INFO  [web-server] Health check OK
+2026-11-20 14:31:00 ERROR [web-server] Unhandled exception in /api/orders: NullReferenceError at line 142
+2026-11-20 14:31:05 WARN  [web-server] Slow response: GET /api/reports took 4200ms (threshold: 1000ms)
+2026-11-20 14:31:10 ERROR [cache-service] Redis connection lost to 10.0.0.15:6379 - retrying in 5s
+2026-11-20 14:31:15 ERROR [payment-service] Card validation error for card 4111111111111111 user=mike.chen@corp.net

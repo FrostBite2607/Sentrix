@@ -1,0 +1,1045 @@
+/* ================================================================
+   SENTRIX — style.css
+   Mobile-first stylesheet using CSS custom properties.
+   Sections are commented to match index.html structure.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   1. CUSTOM PROPERTIES (design tokens)
+   ---------------------------------------------------------------- */
+:root {
+  /* Colors */
+  --color-bg:         #070B14;   /* Page background */
+  --color-card:       #0D1424;   /* Card / panel background */
+  --color-border:     #1E2B48;   /* Card borders */
+  --color-accent:     #22D3EE;   /* Cyan accent */
+  --color-accent-dim: #22D3EE26; /* Cyan with low opacity (backgrounds) */
+  --color-white:      #FFFFFF;
+  --color-muted:      #9FB0C8;   /* Body / secondary text */
+  --color-warn:       #F59E0B;   /* Amber — moderate warning */
+  --color-danger:     #EF4444;   /* Red — critical alert */
+
+  /* Typography */
+  --font-sans:  'Inter', system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', 'Courier New', monospace;
+
+  /* Spacing scale (multiples of 4px) */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  /* Nav height — used to offset scroll anchors */
+  --nav-height: 72px;
+
+  /* Transition */
+  --transition: 0.2s ease;
+}
+
+/* ----------------------------------------------------------------
+   2. RESET & BASE
+   ---------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Smooth scrolling for anchor links */
+  scroll-behavior: smooth;
+  /* Offset anchors so sticky nav doesn't cover headings */
+  scroll-padding-top: var(--nav-height);
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-muted);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible focus ring for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Remove default list styles where semantic lists are used for UI */
+ul {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img, svg {
+  display: block;
+}
+
+/* ----------------------------------------------------------------
+   3. LAYOUT UTILITY
+   ---------------------------------------------------------------- */
+
+/* Centered max-width wrapper */
+.container {
+  width: 100%;
+  max-width: 1160px;
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+}
+
+/* ----------------------------------------------------------------
+   4. TYPOGRAPHY UTILITIES
+   ---------------------------------------------------------------- */
+
+/* White section headings (h2) */
+.section-heading {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: var(--color-white);
+  line-height: 1.15;
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
+
+/* Muted subheadings beneath section headings */
+.section-subheading {
+  color: var(--color-muted);
+  font-size: 1.0625rem;
+  text-align: center;
+  max-width: 560px;
+  margin-inline: auto;
+  margin-bottom: var(--space-12);
+}
+
+/* ----------------------------------------------------------------
+   5. BUTTON COMPONENTS
+   ---------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition),
+              border-color var(--transition), box-shadow var(--transition);
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+}
+
+/* Cyan filled button */
+.btn--cyan {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  border-color: var(--color-accent);
+}
+
+.btn--cyan:hover,
+.btn--cyan:focus-visible {
+  background-color: #38E8FF;
+  border-color: #38E8FF;
+  box-shadow: 0 0 0 4px var(--color-accent-dim);
+}
+
+/* Outline / ghost button */
+.btn--outline {
+  background-color: transparent;
+  color: var(--color-white);
+  border-color: var(--color-border);
+}
+
+.btn--outline:hover,
+.btn--outline:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ----------------------------------------------------------------
+   6. STICKY NAV
+   ---------------------------------------------------------------- */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition), box-shadow var(--transition),
+              background-color var(--transition);
+}
+
+/* Shadow state added by JS on scroll */
+.nav--scrolled {
+  border-bottom-color: var(--color-border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  background-color: rgba(7, 11, 20, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  height: var(--nav-height);
+  gap: var(--space-8);
+}
+
+/* Logo */
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.nav__logo-icon {
+  flex-shrink: 0;
+}
+
+.nav__logo-text {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--color-white);
+  letter-spacing: 0.08em;
+}
+
+/* Desktop nav links */
+.nav__links {
+  display: none; /* Hidden on mobile; shown at wider breakpoint */
+  align-items: center;
+  gap: var(--space-6);
+  margin-left: auto;
+}
+
+.nav__link {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-muted);
+  transition: color var(--transition);
+}
+
+.nav__link:hover,
+.nav__link:focus-visible {
+  color: var(--color-white);
+}
+
+/* Nav right-side actions */
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+/* Desktop CTA — hidden on mobile */
+.nav__cta {
+  display: none;
+}
+
+/* Hamburger button */
+.nav__hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition);
+}
+
+.nav__hamburger:hover {
+  background-color: var(--color-card);
+}
+
+.nav__hamburger-bar {
+  display: block;
+  height: 2px;
+  background-color: var(--color-white);
+  border-radius: 2px;
+  transition: transform var(--transition), opacity var(--transition), width var(--transition);
+  transform-origin: center;
+}
+
+/* Animate hamburger bars into an X when menu is open */
+.nav-open .nav__hamburger-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-open .nav__hamburger-bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.nav-open .nav__hamburger-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile dropdown menu */
+.nav__mobile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  background-color: rgba(7, 11, 20, 0.98);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  /* Hidden by default: use max-height + opacity for smooth animation */
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+}
+
+/* Show mobile menu when .nav-open is on the nav element */
+.nav-open .nav__mobile {
+  max-height: 360px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav__mobile-link {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-muted);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+  transition: color var(--transition);
+}
+
+.nav__mobile-link:hover,
+.nav__mobile-link:focus-visible {
+  color: var(--color-white);
+}
+
+.nav__mobile-cta {
+  margin-top: var(--space-4);
+  width: 100%;
+}
+
+/* ----------------------------------------------------------------
+   7. HERO
+   ---------------------------------------------------------------- */
+.hero {
+  padding-top: calc(var(--nav-height) + var(--space-16));
+  padding-bottom: var(--space-20);
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  align-items: flex-start;
+}
+
+.hero__copy {
+  max-width: 580px;
+}
+
+.hero__heading {
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  font-weight: 800;
+  color: var(--color-white);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-6);
+}
+
+.hero__body {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+  margin-bottom: var(--space-8);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* ----------------------------------------------------------------
+   8. DASHBOARD MOCKUP (Hero right panel)
+   ---------------------------------------------------------------- */
+.hero__dashboard {
+  width: 100%;
+  max-width: 520px;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  /* Subtle glow to make it feel like a live screen */
+  box-shadow: 0 0 60px rgba(34, 211, 238, 0.06), 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+/* Metric tiles row */
+.dash__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+.dash__tile {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dash__tile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dash__tile-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dash__tile-value {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+.dash__tile-value--warn   { color: var(--color-warn); }
+.dash__tile-value--danger { color: var(--color-danger); }
+
+/* Progress bar track */
+.dash__bar {
+  height: 4px;
+  background-color: var(--color-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+/* Progress bar fill — default cyan */
+.dash__bar-fill {
+  height: 100%;
+  background-color: var(--color-accent);
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+.dash__bar-fill--warn   { background-color: var(--color-warn); }
+.dash__bar-fill--danger { background-color: var(--color-danger); }
+
+/* Event section label */
+.dash__section-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: var(--space-2);
+}
+
+/* Event list */
+.dash__event-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dash__event {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+}
+
+/* Coloured dot indicator */
+.dash__event-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: var(--color-accent);
+}
+
+.dash__event-dot--warn   { background-color: var(--color-warn); }
+.dash__event-dot--danger { background-color: var(--color-danger); }
+
+.dash__event-text {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-white);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash__event-time {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+
+/* Likely cause box — cyan left-border accent */
+.dash__cause {
+  border-left: 3px solid var(--color-accent);
+  background-color: rgba(34, 211, 238, 0.05);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: var(--space-3) var(--space-4);
+}
+
+.dash__cause-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-1);
+}
+
+.dash__cause-text {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+
+/* Sample data disclaimer */
+.dash__disclaimer {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--color-border);
+  text-align: right;
+  letter-spacing: 0.04em;
+}
+
+/* ----------------------------------------------------------------
+   9. SHARED CARD COMPONENT
+   Used by Features and Use Cases sections.
+   ---------------------------------------------------------------- */
+.card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  border-color: rgba(34, 211, 238, 0.4);
+  box-shadow: 0 4px 32px rgba(34, 211, 238, 0.06);
+}
+
+.card__icon {
+  width: 44px;
+  height: 44px;
+  background-color: var(--color-accent-dim);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.card__title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: var(--space-3);
+  line-height: 1.3;
+}
+
+.card__body {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--color-muted);
+}
+
+/* ----------------------------------------------------------------
+   10. FEATURES SECTION
+   ---------------------------------------------------------------- */
+.features {
+  padding-block: var(--space-20);
+  border-top: 1px solid var(--color-border);
+}
+
+.features .section-heading {
+  margin-bottom: var(--space-12);
+}
+
+/* 1-column on mobile, 2×2 on wider screens */
+.features__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+/* ----------------------------------------------------------------
+   11. PRIVACY SECTION
+   ---------------------------------------------------------------- */
+.privacy {
+  padding-block: var(--space-20);
+  border-top: 1px solid var(--color-border);
+}
+
+.privacy .section-heading {
+  margin-bottom: var(--space-12);
+}
+
+/* Steps container — column on mobile, row on desktop */
+.privacy__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+/* Individual step */
+.privacy__step {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+}
+
+/* Large step number */
+.privacy__step-num {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  opacity: 0.6;
+  line-height: 1;
+  margin-bottom: var(--space-4);
+}
+
+.privacy__step-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: var(--space-3);
+}
+
+.privacy__step-body {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+/* Connecting line/arrow between steps — decorative, hidden on mobile */
+.privacy__connector {
+  display: none;
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(to right, var(--color-border), var(--color-accent), var(--color-border));
+  flex-shrink: 0;
+  margin-top: 0; /* vertically centred by flex align-items */
+}
+
+/* ----------------------------------------------------------------
+   12. USE CASES SECTION
+   ---------------------------------------------------------------- */
+.use-cases {
+  padding-block: var(--space-20);
+  border-top: 1px solid var(--color-border);
+}
+
+.use-cases .section-heading {
+  margin-bottom: var(--space-12);
+}
+
+/* 1 column on mobile, 3 columns on wide screens */
+.use-cases__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+/* ----------------------------------------------------------------
+   13. PRICING SECTION
+   ---------------------------------------------------------------- */
+.pricing {
+  padding-block: var(--space-20);
+  border-top: 1px solid var(--color-border);
+}
+
+.pricing .section-heading {
+  margin-bottom: var(--space-4);
+}
+
+/* Pricing cards grid — 1 col mobile, 3 col desktop */
+.pricing__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.pricing__card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Pro card gets a cyan border highlight */
+.pricing__card--pro {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 40px rgba(34, 211, 238, 0.1);
+}
+
+/* "Most popular" badge */
+.pricing__badge {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: var(--space-1) var(--space-3);
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.pricing__tier-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-white);
+  margin-top: var(--space-2); /* Extra room below badge on Pro */
+}
+
+/* Feature list inside pricing card */
+.pricing__features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.pricing__feature {
+  font-size: 0.9375rem;
+  color: var(--color-muted);
+  padding-left: var(--space-5);
+  position: relative;
+}
+
+/* Cyan bullet / checkmark */
+.pricing__feature::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  opacity: 0.6;
+}
+
+.pricing__card--pro .pricing__feature::before {
+  opacity: 1;
+}
+
+.pricing__cta {
+  width: 100%;
+  margin-top: auto;
+}
+
+/* ----------------------------------------------------------------
+   14. EARLY ACCESS FORM
+   ---------------------------------------------------------------- */
+.early-access {
+  padding-block: var(--space-20);
+  border-top: 1px solid var(--color-border);
+}
+
+.early-access__inner {
+  max-width: 560px;
+}
+
+.early-access .section-heading {
+  text-align: left;
+}
+
+.early-access .section-subheading {
+  text-align: left;
+  margin-inline: 0;
+}
+
+.early-access__form-wrap {
+  /* Just a wrapper so JS can toggle visibility */
+}
+
+.early-access__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Form group: label + input + error */
+.form__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form__label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-white);
+}
+
+/* Shared styles for input and select */
+.form__input,
+.form__select {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-white);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  padding: 0.65rem var(--space-4);
+  width: 100%;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  /* Removes default select arrow on some browsers; we keep native for accessibility */
+  appearance: auto;
+}
+
+.form__input::placeholder {
+  color: var(--color-border);
+}
+
+.form__input:focus,
+.form__select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-dim);
+}
+
+/* Invalid field styling (applied by JS) */
+.form__input.is-invalid,
+.form__select.is-invalid {
+  border-color: var(--color-danger);
+}
+
+/* Error message text */
+.form__error {
+  font-size: 0.8125rem;
+  color: var(--color-danger);
+  min-height: 1.2em; /* Reserve space to avoid layout jump */
+}
+
+/* Select dropdown option styling (limited cross-browser support) */
+.form__select option {
+  background-color: var(--color-card);
+  color: var(--color-white);
+}
+
+.form__submit {
+  align-self: flex-start;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+}
+
+/* Success message */
+.early-access__success {
+  padding: var(--space-8);
+  background-color: var(--color-card);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.early-access__success-text {
+  font-size: 1.0625rem;
+  color: var(--color-white);
+  font-weight: 500;
+}
+
+/* ----------------------------------------------------------------
+   15. FOOTER
+   ---------------------------------------------------------------- */
+.footer {
+  border-top: 1px solid var(--color-border);
+  padding-block: var(--space-10);
+}
+
+.footer__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.footer__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.footer__logo-text {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--color-white);
+  letter-spacing: 0.08em;
+}
+
+.footer__tagline {
+  font-size: 0.9375rem;
+  color: var(--color-muted);
+  max-width: 400px;
+}
+
+.footer__copy {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-border);
+  letter-spacing: 0.04em;
+}
+
+/* ================================================================
+   RESPONSIVE BREAKPOINTS
+   ================================================================ */
+
+/* ---- Tablet and up: 640px ---- */
+@media (min-width: 640px) {
+  .container {
+    padding-inline: var(--space-8);
+  }
+
+  .features__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .use-cases__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pricing__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---- Desktop: 900px ---- */
+@media (min-width: 900px) {
+  /* Show desktop nav links and CTA; hide hamburger */
+  .nav__links {
+    display: flex;
+  }
+
+  .nav__cta {
+    display: inline-flex;
+  }
+
+  .nav__hamburger {
+    display: none;
+  }
+
+  /* Nav actions margin re-set (links now carry the auto margin) */
+  .nav__actions {
+    margin-left: 0;
+  }
+
+  /* Hero: side-by-side layout */
+  .hero__inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-12);
+  }
+
+  .hero__copy {
+    flex: 1;
+  }
+
+  .hero__dashboard {
+    flex: 0 0 460px;
+  }
+
+  /* Privacy: horizontal steps with connectors */
+  .privacy__steps {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .privacy__step {
+    flex: 1;
+    max-width: 280px;
+  }
+
+  .privacy__connector {
+    display: block;
+    margin-top: 56px; /* Align with middle of step card top area */
+  }
+
+  /* 3-column use cases */
+  .use-cases__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* 3-column pricing */
+  .pricing__grid {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: stretch;
+  }
+}
+
+/* ---- Wide desktop: 1160px ---- */
+@media (min-width: 1160px) {
+  .container {
+    padding-inline: var(--space-10);
+  }
+}

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENTRIX — Observability & Security Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Header / Top Navigation -->
+  <header class="topbar">
+    <div class="topbar__left">
+      <div class="logo">
+        <svg class="logo__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <circle cx="12" cy="11" r="3" fill="#22D3EE" stroke="none" />
+        </svg>
+        <span class="logo__text">SENTRIX</span>
+      </div>
+      <span class="topbar__tag">Prototype for CICADA 2026</span>
+    </div>
+
+    <div class="topbar__right">
+      <div class="host-selector-wrap">
+        <label for="hostSelect" class="mono-label">HOST:</label>
+        <select id="hostSelect" class="select-input">
+          <option value="">All Hosts</option>
+        </select>
+      </div>
+      <div class="live-indicator">
+        <span class="live-dot"></span>
+        <span class="mono-label">LIVE (2s poll)</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- Stat Cards / Overview Tiles -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card__label mono-label">HOSTS ONLINE</div>
+        <div class="stat-card__value" id="valHostsOnline">0</div>
+        <div class="stat-card__sub" id="subHostsOnline">Awaiting telemetry...</div>
+      </div>
+      <div class="stat-card stat-card--alert">
+        <div class="stat-card__label mono-label">ACTIVE INCIDENTS</div>
+        <div class="stat-card__value text-cyan" id="valIncidents">0</div>
+        <div class="stat-card__sub" id="subIncidents">AI correlated</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label mono-label">FAILED LOGINS (24H)</div>
+        <div class="stat-card__value" id="valFailedLogins">0</div>
+        <div class="stat-card__sub">Auth failure events</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label mono-label">AVG CPU UTILIZATION</div>
+        <div class="stat-card__value" id="valAvgCpu">0.0%</div>
+        <div class="stat-card__sub" id="subAvgCpu">Across all nodes</div>
+      </div>
+    </section>
+
+    <!-- Main Dashboard Body: Telemetry Charts & Incidents -->
+    <div class="dashboard-grid">
+      <!-- Left Column: Metrics & Charts -->
+      <section class="card charts-panel">
+        <div class="card__header">
+          <h2 class="card__title">Real-Time Node Telemetry</h2>
+          <span class="mono-label text-muted" id="chartHostLabel">Showing All Hosts</span>
+        </div>
+        <div class="charts-container">
+          <div class="chart-block">
+            <div class="chart-block__head">
+              <span class="mono-label">CPU USAGE (%)</span>
+              <span class="mono-label text-cyan" id="liveCpuVal">--</span>
+            </div>
+            <canvas id="chartCpu" height="110"></canvas>
+          </div>
+          <div class="chart-block">
+            <div class="chart-block__head">
+              <span class="mono-label">MEMORY USAGE (%)</span>
+              <span class="mono-label text-purple" id="liveMemVal">--</span>
+            </div>
+            <canvas id="chartMem" height="110"></canvas>
+          </div>
+          <div class="chart-block">
+            <div class="chart-block__head">
+              <span class="mono-label">NETWORK THROUGHPUT (KB/s)</span>
+              <span class="mono-label text-green" id="liveNetVal">--</span>
+            </div>
+            <canvas id="chartNet" height="110"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Correlated Incidents & Root Cause -->
+      <section class="card incidents-panel">
+        <div class="card__header">
+          <div>
+            <h2 class="card__title">AI-Correlated Incidents</h2>
+            <p class="card__desc">Related events clustered into unified root-cause explanations.</p>
+          </div>
+          <span class="badge badge--cyan" id="incidentCountBadge">0 Active</span>
+        </div>
+        
+        <div class="incident-list" id="incidentList">
+          <div class="empty-state">No active incidents detected. All monitored systems operational.</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Bottom Section: Privacy Proof Panel & Recent Events -->
+    <div class="dashboard-grid-bottom">
+      <!-- Privacy Proof Panel -->
+      <section class="card privacy-panel">
+        <div class="card__header">
+          <div>
+            <div class="privacy-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <span>LOCAL PRIVACY GUARANTEE</span>
+            </div>
+            <h2 class="card__title">Privacy Proof: What Left The Node</h2>
+            <p class="card__desc">Actual payloads ingested by the central server. Sensitive data is stripped by local agent before egress.</p>
+          </div>
+          <div class="privacy-filters">
+            <button class="filter-btn active" data-filter="all" id="btnFilterAll">All (<span id="countAll">0</span>)</button>
+            <button class="filter-btn" data-filter="event" id="btnFilterEvents">Redacted Events (<span id="countEvents">0</span>)</button>
+            <button class="filter-btn" data-filter="metrics" id="btnFilterMetrics">Metrics (<span id="countMetrics">0</span>)</button>
+          </div>
+        </div>
+
+        <div class="privacy-terminal" id="privacyStream">
+          <div class="terminal-line text-muted">// Waiting for collector telemetry egress proof...</div>
+        </div>
+      </section>
+
+      <!-- Real-Time Event Log -->
+      <section class="card events-panel">
+        <div class="card__header">
+          <h2 class="card__title">Redacted Operational Events</h2>
+          <span class="mono-label text-muted">Latest 20</span>
+        </div>
+        <div class="events-table-wrap">
+          <table class="events-table">
+            <thead>
+              <tr>
+                <th>TIME</th>
+                <th>HOST</th>
+                <th>TYPE</th>
+                <th>MESSAGE</th>
+              </tr>
+            </thead>
+            <tbody id="eventsTableBody">
+              <tr>
+                <td colspan="4" class="text-center text-muted">Awaiting incoming events...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Incident Details Modal -->
+  <div class="modal-backdrop" id="incidentModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="badge" id="modalSeverityBadge">CRITICAL</span>
+          <h2 class="modal-title" id="modalTitle">Incident Title</h2>
+        </div>
+        <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Root Cause Box -->
+        <div class="cause-box">
+          <div class="cause-box__title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            LIKELY ROOT CAUSE
+          </div>
+          <p class="cause-box__text" id="modalLikelyCause">Explanation goes here...</p>
+        </div>
+
+        <!-- Recommended Action Box -->
+        <div class="action-box">
+          <div class="action-box__title">RECOMMENDED NEXT STEP</div>
+          <p class="action-box__text" id="modalSuggestedAction">Action goes here...</p>
+        </div>
+
+        <div class="modal-meta">
+          <div><strong class="text-muted">Affected Nodes:</strong> <span id="modalHosts">web-prod-01</span></div>
+          <div><strong class="text-muted">Updated:</strong> <span id="modalUpdated">Just now</span></div>
+        </div>
+
+        <!-- Incident Event Timeline -->
+        <h3 class="timeline-title mono-label">CORRELATED TIMELINE</h3>
+        <div class="timeline-list" id="modalTimeline"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

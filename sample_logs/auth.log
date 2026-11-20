@@ -1,0 +1,9 @@
+2026-11-20 14:31:01 WARN  [sshd] Failed login attempt for user=admin from 192.168.1.105 - invalid password
+2026-11-20 14:31:03 INFO  [sshd] Successful login for user=sarah.jones from 10.0.0.42
+2026-11-20 14:31:06 WARN  [sshd] Failed login attempt for user=admin from 192.168.1.105 - invalid password
+2026-11-20 14:31:09 WARN  [sshd] Failed login attempt for user=root from 192.168.1.105 - invalid password
+2026-11-20 14:31:12 WARN  [webapp] Failed login for user=admin@corp.com from 203.0.113.42 - wrong credentials
+2026-11-20 14:31:15 INFO  [sshd] Successful login for user=deploy from 10.0.0.5
+2026-11-20 14:31:18 WARN  [sshd] Failed login attempt for user=admin from 192.168.1.105 - password=P@ssw0rd123 rejected
+2026-11-20 14:31:21 WARN  [sshd] Failed login attempt for user=testuser from 192.168.1.105 - invalid password
+2026-11-20 14:31:24 WARN  [webapp] Failed authentication for user=operator@internal.net from 198.51.100.7 - account locked
