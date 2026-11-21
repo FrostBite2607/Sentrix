@@ -36,10 +36,11 @@
 
 In the Render dashboard for your service, go to **Environment → Environment Variables** and add:
 
-| Key                | Value                                | Notes                              |
-| ------------------ | ------------------------------------ | ---------------------------------- |
-| `SENTRIX_API_KEY`  | *(a strong random string)*           | Required. Never share publicly.    |
-| `PYTHON_VERSION`   | `3.11.6`                             | Optional; ensures correct runtime. |
+| Key                   | Value                                | Notes                                           |
+| --------------------- | ------------------------------------ | ----------------------------------------------- |
+| `SENTRIX_API_KEY`     | *(a strong random string)*           | Required. Never share publicly.                 |
+| `SENTRIX_ALLOW_RESET` | `false`                              | Optional; defaults to `false` in production.    |
+| `PYTHON_VERSION`      | `3.11.6`                             | Optional; ensures correct runtime.              |
 
 > [!CAUTION]
 > Never commit `SENTRIX_API_KEY` to source control or expose it in frontend code.
@@ -111,6 +112,9 @@ After deployment, verify these:
 | Dashboard loads               | Open `https://sentrix-XXXX.onrender.com` in a browser           | Dark-themed dashboard   |
 | Health check                  | `curl https://sentrix-XXXX.onrender.com/api/health`             | `{"status": "healthy"}` |
 | API auth works                | `curl -H "X-API-Key: wrong" .../ingest/metrics` → 401           | 401 Unauthorized        |
+| Reset rejected unauthenticated| `curl -X POST .../api/reset` → 401                              | 401 Unauthorized        |
+| Reset GET rejected            | `curl -X GET .../api/reset` → 405                               | 405 Method Not Allowed  |
+| Reset blocked in production   | `curl -X POST -H "X-API-Key: $KEY" .../api/reset` → 403         | 403 Forbidden           |
 | Agent connects                | Run collector agent locally with `--server` pointing to Render  | Metrics appear on dashboard |
 | Simulator works               | Run `python -m simulator.incidents all --server ...`            | Incidents appear on dashboard |
 

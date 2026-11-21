@@ -175,8 +175,8 @@ def test_privacy_proof_endpoint_contains_both_metrics_and_events():
     assert "event" in types, "Event payload must be present in privacy proof"
 
 
-def test_reset_endpoint_clears_database_and_stale_hosts():
-    """POST /api/reset wipes all hosts, metrics, events, and incidents."""
+def test_authorized_reset_endpoint_clears_database_and_stale_hosts():
+    """POST /api/reset wipes all hosts, metrics, events, and incidents when authorized."""
     # Populate with stale host and data
     m = MetricPayload(
         host_name="stale-host-test",
@@ -190,8 +190,8 @@ def test_reset_endpoint_clears_database_and_stale_hosts():
     hosts_before = main.get_hosts()["hosts"]
     assert any(h["host_name"] == "stale-host-test" for h in hosts_before)
 
-    # Call reset
-    reset_res = main.reset_system()
+    # Call reset with valid authorization
+    reset_res = main.reset_system(_auth=TEST_API_KEY)
     assert reset_res["status"] == "ok"
 
     # Verify all state is empty
@@ -202,3 +202,65 @@ def test_reset_endpoint_clears_database_and_stale_hosts():
     assert stats_after["hosts_online"] == 0
     assert stats_after["active_incidents"] == 0
     assert stats_after["failed_logins"] == 0
+
+
+def test_unauthorized_reset_attempts_rejected():
+    """Reset operations require valid X-API-Key authentication."""
+    # 1. Missing key
+    with pytest.raises(HTTPException) as exc1:
+        main.verify_api_key(None)
+    assert exc1.value.status_code == 401
+
+    # 2. Invalid key
+    with pytest.raises(HTTPException) as exc2:
+        main.verify_api_key("unauthorized-attacker-key")
+    assert exc2.value.status_code == 401
+
+
+def test_reset_route_disallows_get_method():
+    """Verify that /api/reset only registers POST, rejecting GET requests."""
+    reset_routes = [r for r in main.app.routes if getattr(r, "path", None) == "/api/reset"]
+    assert len(reset_routes) == 1, "Expected exactly one route for /api/reset"
+    methods = reset_routes[0].methods
+    assert "POST" in methods, "POST method must be supported for /api/reset"
+    assert "GET" not in methods, "GET method must NOT be supported for /api/reset"
+
+
+def test_reset_disabled_in_production(monkeypatch):
+    """When reset is disabled (e.g. in production), calling reset_system raises 403 Forbidden."""
+    monkeypatch.setattr(main, "ALLOW_RESET", False)
+
+    with pytest.raises(HTTPException) as exc:
+        main.reset_system(_auth=TEST_API_KEY)
+    assert exc.value.status_code == 403
+    assert "disabled" in exc.value.detail.lower()
+
+
+def test_unauthorized_telemetry_ingest_rejected():
+    """Ingestion endpoints strictly require valid X-API-Key."""
+    # Missing key raises 401
+    with pytest.raises(HTTPException) as exc1:
+        main.verify_api_key(None)
+    assert exc1.value.status_code == 401
+
+    # Invalid key raises 401
+    with pytest.raises(HTTPException) as exc2:
+        main.verify_api_key("wrong-secret-key")
+    assert exc2.value.status_code == 401
+
+
+def test_public_query_endpoints_never_leak_api_key():
+    """Verify that public query endpoints never expose the secret key."""
+    responses = [
+        str(main.get_health()),
+        str(main.get_stats()),
+        str(main.get_hosts()),
+        str(main.get_metrics()),
+        str(main.get_events()),
+        str(main.get_incidents()),
+        str(main.get_privacy_proof()),
+    ]
+
+    for resp_text in responses:
+        assert TEST_API_KEY not in resp_text, "Secret API key leaked in API response!"
+

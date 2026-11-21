@@ -102,9 +102,12 @@ def main():
     if args.reset:
         print("\n  -> Resetting database and clearing stale hosts (--reset passed)...")
         try:
-            r = requests.post(f"{SERVER_URL}/api/reset", timeout=3)
+            headers = {"X-API-Key": demo_env["SENTRIX_API_KEY"]}
+            r = requests.post(f"{SERVER_URL}/api/reset", headers=headers, timeout=3)
             if r.status_code == 200:
                 print("  ✓ Database cleared. Stale hosts removed.")
+            else:
+                print(f"  Warning: Reset call returned status {r.status_code}: {r.text}")
         except Exception as e:
             print(f"  Warning: Reset call failed: {e}")
 

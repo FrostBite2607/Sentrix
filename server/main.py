@@ -44,6 +44,15 @@ SERVER_START_TIME = time.time()
 # Port for uvicorn (Render sets $PORT; default 8000 for local dev)
 SERVER_PORT = int(os.getenv("PORT", "8000"))
 
+# Reset control: In production environments, reset is disabled by default
+IS_PRODUCTION = bool(
+    os.getenv("RENDER")
+    or os.getenv("PRODUCTION")
+    or os.getenv("ENV") == "production"
+)
+DEFAULT_ALLOW_RESET = "false" if IS_PRODUCTION else "true"
+ALLOW_RESET = os.getenv("SENTRIX_ALLOW_RESET", DEFAULT_ALLOW_RESET).lower() in ("true", "1", "yes")
+
 # In-memory buffer of latest ingested payloads for the Privacy & Redaction Proof panel
 _PRIVACY_PROOF_PAYLOADS: List[Dict[str, Any]] = []
 
@@ -196,9 +205,19 @@ def get_stats():
 
 
 @app.post("/api/reset")
-@app.get("/api/reset")
-def reset_system():
-    """Wipes database and in-memory caches to clear stale hosts before a demo."""
+def reset_system(_auth: str = Depends(verify_api_key)):
+    """Wipes database and in-memory caches to clear stale hosts before a demo.
+
+    Security Controls:
+      1. POST only (GET is strictly forbidden and returns 405 Method Not Allowed).
+      2. Requires valid X-API-Key authentication (returns 401 Unauthorized if missing/invalid).
+      3. Disabled in production environments by default (returns 403 Forbidden unless SENTRIX_ALLOW_RESET=true).
+    """
+    if not ALLOW_RESET:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Database reset operation is disabled in this environment"
+        )
     db.reset_db()
     _PRIVACY_PROOF_PAYLOADS.clear()
     _METRIC_HISTORY.clear()
