@@ -1,0 +1,20 @@
+# render.yaml — Render Blueprint for SENTRIX
+# Docs: https://docs.render.com/blueprint-spec
+#
+# Deploy this via the Render dashboard:
+#   1. Connect your GitHub repo (FrostBite2607/Sentrix)
+#   2. Render auto-detects this file and creates the service.
+#   3. Set SENTRIX_API_KEY in the Render Environment tab.
+
+services:
+  - type: web
+    name: sentrix
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SENTRIX_API_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: "3.11.6"
+    healthCheckPath: /api/health

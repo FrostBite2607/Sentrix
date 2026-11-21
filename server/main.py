@@ -41,6 +41,8 @@ from server.correlator import correlate_and_evaluate_incidents, process_metric_t
 API_KEY = os.getenv("SENTRIX_API_KEY", "").strip()
 DASHBOARD_DIR = os.path.join(PROJECT_ROOT, "dashboard")
 SERVER_START_TIME = time.time()
+# Port for uvicorn (Render sets $PORT; default 8000 for local dev)
+SERVER_PORT = int(os.getenv("PORT", "8000"))
 
 # In-memory buffer of latest ingested payloads for the Privacy & Redaction Proof panel
 _PRIVACY_PROOF_PAYLOADS: List[Dict[str, Any]] = []
@@ -260,3 +262,12 @@ if os.path.exists(DASHBOARD_DIR):
         if os.path.exists(index_file):
             return FileResponse(index_file)
         return {"error": "Dashboard index.html not found"}
+
+
+# ---------------------------------------------------------------------------
+# Standalone Entry Point  (python -m server.main  or  python server/main.py)
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("server.main:app", host="0.0.0.0", port=SERVER_PORT, log_level="info")
